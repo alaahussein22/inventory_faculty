@@ -93,7 +93,7 @@ if (isset($_SESSION['user'])) {
 	} else {
 		$output .= "
 				<tr>
-					<td colspan='6' align='center'>Order Cart Is Empty</td>
+					<td colspan='6' align='center'>Order Request Is Empty</td>
 				<tr>
 			";
 	}
