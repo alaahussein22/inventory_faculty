@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Jul 15, 2022 at 12:43 PM
--- Server version: 5.7.31
--- PHP Version: 7.3.21
+-- Host: 127.0.0.1
+-- Generation Time: Jul 18, 2022 at 11:26 AM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,25 +27,26 @@ SET time_zone = "+00:00";
 -- Table structure for table `cart`
 --
 
-DROP TABLE IF EXISTS `cart`;
-CREATE TABLE IF NOT EXISTS `cart` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `status` varchar(25) CHARACTER SET utf8mb4 DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `cart`
 --
 
-INSERT INTO `cart` (`id`, `user_id`, `product_id`, `quantity`, `status`) VALUES
-(9, 13, 1, 6, NULL),
-(10, 13, 9, 5, 'cancel'),
-(11, 15, 9, 1, NULL),
-(12, 15, 7, 1, NULL);
+INSERT INTO `cart` (`id`, `user_id`, `product_id`, `quantity`, `status`, `created_at`) VALUES
+(9, 13, 1, 6, 'active', '2022-07-18 08:53:40'),
+(10, 13, 9, 5, NULL, '2022-07-18 08:36:53'),
+(11, 15, 9, 1, NULL, '2022-07-18 08:36:53'),
+(12, 15, 7, 1, NULL, '2022-07-18 08:36:53'),
+(17, 5, 11, 20, 'null', '2022-07-18 08:38:25'),
+(18, 13, 28, 1, NULL, '2022-07-18 09:11:55');
 
 -- --------------------------------------------------------
 
@@ -53,13 +54,11 @@ INSERT INTO `cart` (`id`, `user_id`, `product_id`, `quantity`, `status`) VALUES
 -- Table structure for table `category`
 --
 
-DROP TABLE IF EXISTS `category`;
-CREATE TABLE IF NOT EXISTS `category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `cat_slug` varchar(150) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  `cat_slug` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `category`
@@ -77,14 +76,12 @@ INSERT INTO `category` (`id`, `name`, `cat_slug`) VALUES
 -- Table structure for table `details`
 --
 
-DROP TABLE IF EXISTS `details`;
-CREATE TABLE IF NOT EXISTS `details` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `details` (
+  `id` int(11) NOT NULL,
   `sales_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `details`
@@ -105,16 +102,14 @@ INSERT INTO `details` (`id`, `sales_id`, `product_id`, `quantity`) VALUES
 -- Table structure for table `feedback`
 --
 
-DROP TABLE IF EXISTS `feedback`;
-CREATE TABLE IF NOT EXISTS `feedback` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `feedback` (
+  `id` int(11) NOT NULL,
   `firs` varchar(50) NOT NULL,
   `last` varchar(50) NOT NULL,
   `email` varchar(200) NOT NULL,
   `message` text NOT NULL,
-  `created_at` date NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+  `created_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `feedback`
@@ -130,7 +125,8 @@ INSERT INTO `feedback` (`id`, `firs`, `last`, `email`, `message`, `created_at`) 
 (7, 'Roth', 'Hampton', 'hidyvykyr@mailinator.com', 'Reprehenderit et ali', '2022-07-13'),
 (8, 'Roth', 'Hampton', 'hidyvykyr@mailinator.com', 'Reprehenderit et ali', '2022-07-13'),
 (9, 'Roth', 'Hampton', 'hidyvykyr@mailinator.com', 'Reprehenderit et ali', '2022-07-13'),
-(10, 'Roth', 'Hampton', 'hidyvykyr@mailinator.com', 'Reprehenderit et ali', '2022-07-13');
+(10, 'Roth', 'Hampton', 'hidyvykyr@mailinator.com', 'Reprehenderit et ali', '2022-07-13'),
+(11, 'alaa', 'ali', 'alaa22@gmail.com', 'how are you', '2022-07-18');
 
 -- --------------------------------------------------------
 
@@ -138,9 +134,8 @@ INSERT INTO `feedback` (`id`, `firs`, `last`, `email`, `message`, `created_at`) 
 -- Table structure for table `products`
 --
 
-DROP TABLE IF EXISTS `products`;
-CREATE TABLE IF NOT EXISTS `products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `name` text NOT NULL,
   `description` text NOT NULL,
@@ -148,9 +143,8 @@ CREATE TABLE IF NOT EXISTS `products` (
   `price` double NOT NULL,
   `photo` varchar(200) NOT NULL,
   `date_view` date NOT NULL,
-  `counter` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+  `counter` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `products`
@@ -162,7 +156,7 @@ INSERT INTO `products` (`id`, `category_id`, `name`, `description`, `slug`, `pri
 (3, 1, 'DELL Inspiron 15 5000 15.6', '<p>Dell&#39;s 15.6-inch, midrange notebook is a bland, chunky block. It has collection of island-style keys.</p>\r\n', 'computer', 599, 'commm11.jpg', '2018-05-12', 1),
 (4, 1, 'LENOVO Ideapad 320s-14IKB 14\" Laptop - Grey', '<p>- Made for portability with a slim, lightweight chassis design&nbsp;<br />\r\n<br /> business use, editing photos, and anything else you do throughout the day.</p>\r\n', 'computer', 399, 'commm8.jpg', '2018-05-10', 3),
 (6, 1, 'DELL Inspiron 15 5000 15', '<p>15-inch laptop delivering an exceptional viewing experience, a head-turning finish and an array of options designed to elevate your entertainment, wherever you go.</p>\r\n', 'computer', 449.99, 'commm12.jpg', '0000-00-00', 10),
-(7, 3, 'Ikeo Voltage', '<p>4K video recording at 30 fps</p>\r\n\r\n<p>12-megapixel camera</p>\r\n\r\n<p>Fingerprint resistant coating</p>\r\n\r\n<p>Antireflective coating</p>\r\n\r\n<p>Face Time video calling</p>\r\n', 'voltage', 619, 'volt7.jpg', '2022-07-02', 1),
+(7, 3, 'Ikeo Voltage', '<p>4K video recording at 30 fps</p>\r\n\r\n<p>12-megapixel camera</p>\r\n\r\n<p>Fingerprint resistant coating</p>\r\n\r\n<p>Antireflective coating</p>\r\n\r\n<p>Face Time video calling</p>\r\n', 'voltage', 619, 'volt7.jpg', '2022-07-18', 1),
 (8, 1, 'ASUS Transformer Mini T102HA 10.1\" 2 in 1 - Silver', '<p>Versatile Windows 10 device with keyboard and pen included, 2-in-1  so you can use a mobile charger or any power bank with a micro USB connector.</p>\r\n', 'computer', 549.99, 'commm13.jpg', '0000-00-00', 9),
 (9, 2, 'Smart Printer', '<p>- Top performance for playing eSports and players.</p>\r\n', 'printer', 599.99, 'laser-printer-149815__340.webp', '2022-07-07', 1),
 (10, 2, 'Black Printer', '<p>All-new gaming desktop featuring powerful AMD Ryzen&trade; processors, graphics ready for VR, LED lighting and a meticulous design for optimal cooling.</p>\r\n', 'printer', 599.99, 'print1.jpg', '2018-05-10', 1),
@@ -176,7 +170,7 @@ INSERT INTO `products` (`id`, `category_id`, `name`, `description`, `slug`, `pri
 (19, 3, 'Voltage Generator', '<p>The next generation of our best-reviewed Fire tablet, with up to 12 hours of battery life, a vibrant 8&quot; HD display, a 1.3 GHz quad-core processor, 1.5 GB of RAM, and Dolby Audio. More durable than the latest iPad.</p>\r\n\r\n<p>16 or 32 GB of internal storage and a microSD slot for up to 256 GB of expandable storage.</p>\r\n', 'voltage', 99.99, 'volt3.jpg', '2018-05-10', 8),
 (20, 3, 'APPLE Generator', '<p>9.7-inch Retina display, wide color and true tone</p>\r\n\r\n<p>A9 third-generation chip with 64-bit architecture</p>\r\n\r\n<p>M9 motion coprocessor</p>\r\n\r\n', 'voltage', 339, 'volt5.jpg', '2018-05-12', 1),
 (27, 1, 'Dell XPS 15 9560', '<p>The smallest 15.6-inch performance laptop packs powerhouse \r\nswipe and pinch your way around the screen. The optional touch display lets you interact naturally with your technology.</p>\r\n', 'computer', 1599, 'macbook-459196__340.jpg', '2018-07-09', 9),
-(28, 4, 'Note Wires', '<p>See the bigger picture and communicate in a whole new way. With the Galaxy Note8 in your hand, bigger things are just waiting to happen.&nbsp;</p>\r\n Do things that matter with the S Pen.</p>\r\n<p>*Image simulated for illustration purpose only.</p>\r\n', 'wires', 829, 'wires1.jpg', '2022-07-02', 1),
+(28, 4, 'Note Wires', '<p>See the bigger picture and communicate in a whole new way. With the Galaxy Note8 in your hand, bigger things are just waiting to happen.&nbsp;</p>\r\n Do things that matter with the S Pen.</p>\r\n<p>*Image simulated for illustration purpose only.</p>\r\n', 'wires', 829, 'wires1.jpg', '2022-07-18', 1),
 (29, 4, 'Calc Wires', '<h2>The revolutionary camera that adapts like the human eye. Set the video to music or turn it into a looping GIF, and share it with a tap. Then sit back and watch the reactions roll in.</p>\r\n', 'wires', 889.99, 'wires2.jpg', '2018-07-09', 3),
 (30, 4, 'Femto Wires', '<h2>The revolutionary camera that adapts like the human eye. Set the video to music or turn it into a looping GIF, and share it with a tap. Then sit back and watch the reactions roll in.</p>\r\n', 'wires', 889.99, 'wires3.jpg', '2018-07-09', 31),
 (31, 4, 'Card Wires', '<h2>The revolutionary camera that adapts like the human eye. Set the video to music or turn it into a looping GIF, and share it with a tap. Then sit back and watch the reactions roll in.</p>\r\n', 'wires', 889.99, 'wires4.jpg', '2018-07-09', 10);
@@ -184,17 +178,31 @@ INSERT INTO `products` (`id`, `category_id`, `name`, `description`, `slug`, `pri
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `reports`
+--
+
+CREATE TABLE `reports` (
+  `id` int(50) NOT NULL,
+  `user_id` int(50) NOT NULL,
+  `product_id` int(50) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `quantity` int(50) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sales`
 --
 
-DROP TABLE IF EXISTS `sales`;
-CREATE TABLE IF NOT EXISTS `sales` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `sales` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `pay_id` varchar(50) NOT NULL,
-  `sales_date` date NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+  `sales_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sales`
@@ -210,9 +218,8 @@ INSERT INTO `sales` (`id`, `user_id`, `pay_id`, `sales_date`) VALUES
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
   `email` varchar(200) NOT NULL,
   `password` varchar(60) NOT NULL,
   `type` int(1) NOT NULL,
@@ -224,9 +231,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `status` int(1) NOT NULL,
   `activate_code` varchar(15) NOT NULL,
   `reset_code` varchar(15) NOT NULL,
-  `created_on` date NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+  `created_on` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
@@ -239,6 +245,104 @@ INSERT INTO `users` (`id`, `email`, `password`, `type`, `firstname`, `lastname`,
 (13, 'sara11@gmail.com', '$2y$10$4sSHstKsl3.6Ho1ryE5bGevWOPNHoxP1m6HYizsAyxhP2mWCFQ632', 0, 'sara', 'Ali', '...', '01154685577', '', 1, '', '', '2022-05-22'),
 (14, 'shimaa12@gmail.com', '$2y$10$ZuAPnMYJevolccNaTV/jPOzrRi5Jpxan6fjViaFCJl1nh9TyT/9gK', 0, 'Shimaa', 'ElBdewy', 'Cairo', '01154685588', '', 1, '', '', '2022-05-23'),
 (15, 'esraa123@gmail.com', '$2y$10$sdfKNTFuRxGJNPkEu51g3OWHAsJjH9.PReLoig52ubOvHqhWhHhD2', 0, 'Esraa', 'Azzam', 'El-maady -cairo-egypt', '01154685577', 'images.png', 1, '', '', '2022-07-02');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `details`
+--
+ALTER TABLE `details`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `reports`
+--
+ALTER TABLE `reports`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sales`
+--
+ALTER TABLE `sales`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `details`
+--
+ALTER TABLE `details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT for table `sales`
+--
+ALTER TABLE `sales`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
